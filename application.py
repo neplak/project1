@@ -8,6 +8,8 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 import config
 from database_setup import User, Author, Book
+from flask_login import LoginManager
+from flask_bootstrap import Bootstrap
 
 app = Flask(__name__,template_folder='my_templates',static_folder="my_scripts")
 app.config.from_object(config.Config)
@@ -24,10 +26,18 @@ Session(app)
 engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"])
 db_session = scoped_session(sessionmaker(bind=engine))
 
+login_manager=LoginManager()
+login_manager.init_app(app)
+bootstrap=Bootstrap(app)
 
 @app.route("/")
 def index():
     return "Project 1: TODO"
+
+@app.route("/index1")
+def index1():
+    return render_template("index1.html")
+
 
 @app.route("/register/",methods=['post','get'])
 def register():
