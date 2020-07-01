@@ -30,6 +30,13 @@ login_manager=LoginManager()
 login_manager.init_app(app)
 bootstrap=Bootstrap(app)
 
+@login_manager.user_loader
+def load_user(user_id):
+    query=db_session.query('User').filter_by(nick=user_id)
+    res=query.first()
+    return res
+
+
 @app.route("/")
 def index():
     return "Project 1: TODO"
